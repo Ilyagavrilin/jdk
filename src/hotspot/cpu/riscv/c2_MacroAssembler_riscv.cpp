@@ -1674,7 +1674,7 @@ void C2_MacroAssembler::signum_fp(FloatRegister dst, FloatRegister src, FloatReg
   // 4 - src is +0
   // 8 - src is signaling NaN
   // 9 - src is a quiet NaN
-  andi(tmp1, tmp1, Assembler::FpType::any_NaN || Assembler::FpType::any_zero);
+  andi(tmp1, tmp1, Assembler::FpType::any_NaN | Assembler::FpType::any_zero);
 
   bnez(tmp1, done);
 
