@@ -1571,7 +1571,7 @@ void C2_MacroAssembler::minmax_fp(FloatRegister dst, FloatRegister src1, FloatRe
   is_double ? fclass_d(t1, src2)
             : fclass_s(t1, src2);
   orr(t0, t0, t1);
-  andi(t0, t0, 0b1100000000); //if src1 or src2 is quiet or signaling NaN then return NaN
+  andi(t0, t0, Assembler::FpType::any_NaN); //if src1 or src2 is quiet or signaling NaN then return NaN
   beqz(t0, Compare);
   is_double ? fadd_d(dst, src1, src2)
             : fadd_s(dst, src1, src2);
@@ -1674,7 +1674,7 @@ void C2_MacroAssembler::signum_fp(FloatRegister dst, FloatRegister src, FloatReg
   // 4 - src is +0
   // 8 - src is signaling NaN
   // 9 - src is a quiet NaN
-  andi(tmp1, tmp1, 0b1100011000);
+  andi(tmp1, tmp1, Assembler::FpType::any_NaN || Assembler::FpType::any_zero);
 
   bnez(tmp1, done);
 

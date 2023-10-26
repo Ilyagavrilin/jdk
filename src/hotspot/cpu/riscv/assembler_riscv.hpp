@@ -1074,6 +1074,27 @@ enum operand_size { int8, int16, int32, uint32, int64 };
 
 #undef INSN
 
+enum FpType {
+  // default rd bits, according to RISC-V spec
+  neg_inf       = 1u << 0,
+  neg_normal    = 1u << 1,
+  neg_subnormal = 1u << 2,
+  neg_zero      = 1u << 3,
+  pos_zero      = 1u << 4,
+  pos_subnormal = 1u << 5,
+  pos_normal    = 1u << 6,
+  pos_inf       = 1u << 7,
+  signaling_NaN = 1u << 8,
+  quiet_NaN     = 1u << 9,
+  // some useful aliases
+  any_inf       = neg_inf | pos_inf,
+  any_normal    = neg_normal | pos_normal,
+  any_subnormal = neg_subnormal | pos_subnormal,
+  any_zero      = neg_zero | pos_zero,
+  any_NaN       = signaling_NaN | quiet_NaN,
+  any_finite    = any_normal | any_subnormal | any_zero,
+};
+
 // Float and Double Conversion Instruction
 #define INSN(NAME, op, funct3, funct5, funct7)            \
   void NAME(Register Rd, FloatRegister Rs1) {             \
